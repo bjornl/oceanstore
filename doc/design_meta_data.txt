@@ -1,0 +1,47 @@
+
+ +-------------+--------------------------------+
+ | Generation# | datakey sha1                   |
+ +-------------+------------------+-------------+
+ | chunk#      | chunk sha1       | ip# 1       |
+ | chunk#      | chunk sha1       | ip# 2       |
+ | chunk#      | chunk sha1       | ip# 3       |
+ +-------------+------------------+-------------+
+
+Dummy example of a meta data chunk:
+
+ +--------------------------------------------------+
+ | 234234234 | 345h34hjg5hjgjhg5h3g5h3g5jh34g5hj345 |
+ +---+-------+---------+----------------------------+
+ | 1 | 4hj5hkj43h5kj34 | 1.1.1.1                    |
+ +---+-------+---------+----------------------------+
+ | 1 | 4hj5hkj43h5kj34 | 2.2.2.2                    |
+ +---+-------+---------+----------------------------+
+ | 1 | 4hj5hkj43h5kj34 | 3.3.3.3                    |
+ +---+-------+---------+----------------------------+
+ | 2 | jkhj4hj23h4kjh3 | 4.4.4.4                    |
+ +---+-------+---------+----------------------------+
+ | 2 | jkhj4hj23h4kjh3 | 5.5.5.5                    |
+ +---+-------+---------+----------------------------+
+ | 2 | jkhj4hj23h4kjh3 | 6.6.6.6                    |
+ +---+-------+---------+----------------------------+
+
+in the protocol message header for generation a unsigned int32 will be used.
+
+each chunk exists on three different nodes.
+
+if a node disapears (becomes "dead") the chunk is migrated to another node.
+
+the generation number tells if a node have a older generation and should update.
+
+a protocol message called "get index of all your meta data" is sent to a node. the answer is a flat list of key + generation#.
+
++---------------+------------+
+| data key sha1 | generation |
++---------------+------------+
+| data key sha1 | generation |
++---------------+------------+
+| data key sha1 | generation |
++---------------+------------+
+
+if the generation is newer or the key is unknown it requests the particular meta data chunk from the node and updates its internal cache of meta data chucks, and writes its to disk.
+
