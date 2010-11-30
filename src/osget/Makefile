@@ -1,4 +1,4 @@
-target = osd
+target = osget
 objects = main.o
 
 $(target): $(objects)
