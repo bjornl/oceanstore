@@ -1,0 +1,31 @@
+
+All actions are consists of work units that are put on generic queues managed by wool.
+
+concurrent design based on a "message passing" type of deisgn where a "work unit", WU can be seen as a message.
+
+protocol messages come in on a signle UDP port, as receiver thread places the WU into the queues evenly distributed
+in a roundrobin fashion. The WUs then work their way down to engine which works of the queue in FIFO style.
+As we used Wool as our multicore, it'ss work-stealing mechanism evens out the queues if some queue is empty
+
+This design gives us infinite linear scalability and maximum network troughput. Throw on more cores and it goes faster, throw on more network and it goes faster. No shares memory, locking, etc that hampers performance and introduces waits. Stateless design.
+
+Example of a simple client->server flow
+
+1. work unit is put on the queue on the "client" side.
+
+2. work unit message is received on the socket as the server and placed on one of the worker thread queues.
+
+3. work unit is of type "give me a list of your meta data"
+
+4. the work unit is handle by the engine and a UDP packet is send to the requester.
+
+5. the packet is dropped on network.
+
+5. the timer on the "client" side is trigged, the client worker engine hasn't received an answer in x milliseconds.
+
+6. a new work unit is put on the queue on the "client" side by the worker engine.
+
+All nodes are equal, whenever it's a osd or a client. the can both use the same shared functionality trough libos.so
+
+whenever a client fetching a chunck or as osd migrating a chunk they send exacty the same "get chunk" protocol message.
+

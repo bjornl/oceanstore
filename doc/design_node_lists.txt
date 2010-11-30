@@ -1,0 +1,7 @@
+
+the node list is written regulary to disk by specialy "write node list to disk" work units that is put on the queues by a worker thread.
+
+then a node starts the node list is read from disk and pruned (each ip checked, sending "heartbeat protocol messages" to each node), the new list is then written to disk.
+
+each new ip discovered is put on the list in memory and the new list writen to disk. a "scan all meta data chunks and put new unknown ips to the list in ram and write it to disk" workunit handles the updating of the list.
+
