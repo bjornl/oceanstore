@@ -5,4 +5,4 @@ $(target): $(objects)
 	cc -o $(target) $(objects)
 
 clean:
-	rm $(target) $(objects)
+	rm -f $(target) $(objects)
