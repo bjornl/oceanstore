@@ -1,0 +1,9 @@
+
+1. open file and read  chunk by chunk and transmit
+
+2. then all chunks are transmitted create meta data chunk and transmitt to osd
+
+3. osd then goes trough the data chunk list in the meta data and verifies that all data chunks have been recived and written to storage
+
+4. if ok the file is commited and a response is sent to the client.
+
