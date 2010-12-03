@@ -1,0 +1,32 @@
+
+Protocol message packet types:
+
+1. metadata chunk
+
+  Complete meta data for a file.
+
+  client -> server at upload of new file
+  server -> server on metadata migration between nodes
+
+2. data chunk
+
+  A piece of raw data
+
+  client -> server at upload of new file
+
+  server -> client at download of file
+
+  server -> server on migration of data between nodes
+
+3. metadata request
+
+  server -> server at metadata migration, a node requests a particular metadata chuck from another node
+
+  client -> server , client download of file a metadata request is sent for the requesting sha1 file key
+
+4. data request 
+
+  server -> server on data migration between nodes
+
+  client -> server on file download
+
