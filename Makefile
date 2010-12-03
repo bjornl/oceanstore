@@ -1,8 +1,8 @@
 all:
+	$(MAKE) -C src/libocean
 	$(MAKE) -C src/osd
 	$(MAKE) -C src/osput
 	$(MAKE) -C src/osget
-	$(MAKE) -C src/libocean
 
 clean:
 	$(MAKE) clean -C src/osd
