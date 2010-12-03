@@ -8,10 +8,10 @@ os_sha1(char *chunk)
 {
 	unsigned char buf[20];
 	char *hash = malloc(41);
+	int i;
 
 	SHA1((const unsigned char *) chunk, strlen(chunk), buf);
 
-	int i;
 	for (i = 0 ; i < 20 ; i++)
 		sprintf(hash, "%s%02x", hash, buf[i]);
 

@@ -1,8 +1,9 @@
-target = libocean.so
-objects = metadata.o sha1.o
+CFLAGS = -ansi -Wall -g -pedantic
+TARGET = libocean.so
+OBJECTS = metadata.o sha1.o
 
-$(target): $(objects)
-	cc -shared -o $(target) $(objects) -lssl
+$(TARGET): $(OBJECTS)
+	cc -shared -o $(TARGET) $(OBJECTS) -lssl
 
 clean:
-	rm -f $(target) $(objects)
+	rm -f $(TARGET) $(OBJECTS)
