@@ -7,9 +7,9 @@ char *
 os_sha1(char *chunk)
 {
 	unsigned char buf[20];
-	unsigned char *hash = malloc(41);
+	char *hash = malloc(41);
 
-	SHA1(chunk, strlen(chunk), buf);
+	SHA1((const unsigned char *) chunk, strlen(chunk), buf);
 
 	int i;
 	for (i = 0 ; i < 20 ; i++)
