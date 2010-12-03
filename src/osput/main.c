@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <string.h> /* memset */
 
+#include <libocean.h>
+
 #define CHUNK_SIZE 64000
 
 int
@@ -44,6 +46,8 @@ main(int argc, char **argv)
 	printf("data: \"%s\"\n", buf);
 
 	close(fd);
+
+	printf("%s\n", os_sha1("abc"));
 
 	return 0;
 }

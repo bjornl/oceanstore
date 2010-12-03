@@ -1,8 +1,10 @@
-target = osput
-objects = main.o
+CFLAGS = -I../libocean
+LDFLAGS = -L../libocean -locean
+TARGET = osput
+OBJECTS = main.o
 
-$(target): $(objects)
-	cc -o $(target) $(objects)
+$(TARGET): $(OBJECTS)
+	cc -o $(TARGET) $(OBJECTS) $(LDFLAGS)
 
 clean:
-	rm -f $(target) $(objects)
+	rm -f $(TARGET) $(OBJECTS)
