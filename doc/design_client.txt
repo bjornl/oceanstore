@@ -7,3 +7,22 @@
 
 4. if ok the file is commited and a response is sent to the client.
 
+-----
+
+addition 101204:
+
+at client:
+
+Construct inital metadata chunk, it has generation number zero (0)
+transmit to all receiving nodes
+
+at server:
+
+receives metadata chunk and writes it to disk
+
+then a data chunk arrives at the osd the metadata index of data keys in memory are scanned, if we got a match the received data is written to disk
+
+because we at this time doesn't know there the data chunks are commited the ip of the data chunks in the metadata chunk is set to 0.0.0.0
+
+then all data chunks are transmitted by the client it updates the metadata to its final state and transmit it again to the receivng osd, the final metadata chunk has generation one (1)
+
