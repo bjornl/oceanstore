@@ -5,6 +5,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+#define CHUNK_SIZE 64000
+
 char *
 os_sha1(char *chunk)
 {
@@ -23,17 +25,27 @@ os_sha1(char *chunk)
 char *
 os_sha1_file(int fd)
 {
+	unsigned char md[SHA_DIGEST_LENGTH];
+	char *buf = malloc(CHUNK_SIZE);
 	char *hash = malloc(41);
-	char *input = malloc(10000);
-	int length = 10000;
-	SHA256_CTX context;
-	unsigned char md[SHA256_DIGEST_LENGTH];
+	int len = 0, i;
+	SHA_CTX context;
 
 	lseek(fd, 0, SEEK_SET);
 
-	SHA256_Init(&context);
-	SHA256_Update(&context, (unsigned char*)input, length);
-	SHA256_Final(md, &context);
+	SHA1_Init(&context);
+
+	do {
+		len = read(fd, buf, CHUNK_SIZE);
+		if (len)
+			SHA1_Update(&context, (unsigned char*) buf, len);
+	} while (len);
+
+	free(buf);
+	SHA1_Final(md, &context);
+
+	for (i = 0 ; i < 20 ; i++)
+		sprintf(hash, "%s%02x", hash, md[i]);
 
 	return hash;
 }
