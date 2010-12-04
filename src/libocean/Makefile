@@ -1,4 +1,4 @@
-CFLAGS = -ansi -Wall -g -pedantic -fPIC
+CFLAGS = -ansi -Wall -g -pedantic -fPIC -I.
 TARGET = libocean.so
 OBJECTS = metadata.o sha1.o
 
