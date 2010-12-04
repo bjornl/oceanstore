@@ -1,4 +1,4 @@
-CFLAGS = -I../libocean
+CFLAGS = -Wall -g -I../libocean
 LDFLAGS = -L../libocean -locean
 TARGET = osput
 OBJECTS = main.o
