@@ -26,7 +26,7 @@ main(int argc, char **argv)
 	}
 
 	/* construct inital metadata */
-	meta = os_meta_create(fd);
+	meta = os_meta_create(fd, argv[1]);
 
 	/* some test code below */
 
