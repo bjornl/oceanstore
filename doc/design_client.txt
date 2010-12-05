@@ -26,3 +26,12 @@ because we at this time doesn't know there the data chunks are commited the ip o
 
 then all data chunks are transmitted by the client it updates the metadata to its final state and transmit it again to the receivng osd, the final metadata chunk has generation one (1)
 
+---
+design change 101205:
+
+Because be we can generate the chuck data keys in advance on the client without writing all the chunks to disk and waste storage (ie: a 10GB upload will use 10GB temporary disk space), so we send the data chunks first and then we send the metadata last after all data chunks been uploaded.
+
+the generation number will be one (1)
+
+after receiving the metadata block from the client the osd will veryfy that the metadata matches stored data chucks stored on its own ip.
+---
