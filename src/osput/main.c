@@ -7,7 +7,7 @@
 
 #include <libocean.h>
 
-#define CHUNK_SIZE 64000
+#define CHUNK_SIZE 65000
 
 int
 main(int argc, char **argv)
@@ -41,9 +41,10 @@ main(int argc, char **argv)
 		rc = read(fd, buf, CHUNK_SIZE);
 
 		if (rc > 0) {
-			hash = os_sha1(buf);
+			hash = os_sha1(buf, rc);
 			printf("sending payload with hash: %s\n", hash);
 			len = os_send(buf, rc, "1.2.3.4");
+			free(hash);
 
 			/*
 			int fdo = open("charlie.cnk", O_WRONLY|O_CREAT, S_IRUSR|S_IWUSR);
@@ -60,7 +61,7 @@ main(int argc, char **argv)
 
 	close(fd);
 
-	printf("%s\n", os_sha1("abc"));
+	printf("%s\n", os_sha1("abc", 3));
 
 	return 0;
 }

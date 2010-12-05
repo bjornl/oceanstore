@@ -1,6 +1,6 @@
 /* Prototypes */
 
-char * os_sha1 (char *);
+char * os_sha1 (void *, int);
 
 /* char * os_sha1_file (int); */
 unsigned char * os_sha1_file (int);

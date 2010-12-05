@@ -3,6 +3,7 @@
 #include <netinet/in.h>
 #include <string.h>
 #include <arpa/inet.h>
+#include <unistd.h>
 
 #include <stdio.h> /* printf */
 
@@ -21,6 +22,8 @@ os_send(void *chunk, int size, const char *ipaddr)
 	inet_pton(AF_INET, ipaddr, &saddr.sin_addr);
 
 	len = sendto(fd, chunk, size, 0, (const struct sockaddr *) &saddr, sizeof(saddr));
+
+	close(fd);
 
 	printf("sent %d bytes\n", len);
 

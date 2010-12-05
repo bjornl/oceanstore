@@ -8,13 +8,13 @@
 #define CHUNK_SIZE 64000
 
 char *
-os_sha1(char *chunk)
+os_sha1(void *chunk, int size)
 {
 	unsigned char buf[20];
-	char *hash = malloc(41);
+	char *hash = calloc(41, sizeof(char));
 	int i;
 
-	SHA1((const unsigned char *) chunk, strlen(chunk), buf);
+	SHA1((const unsigned char *) chunk, size, buf);
 
 	for (i = 0 ; i < 20 ; i++)
 		sprintf(hash, "%s%02x", hash, buf[i]);
