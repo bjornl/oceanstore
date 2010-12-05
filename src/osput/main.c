@@ -13,8 +13,8 @@ int
 main(int argc, char **argv)
 {
 	char *buf = NULL;
-	char *meta;
-	int fd = 0;
+	char *meta, *hash;
+	int fd = 0, len;
 
 	printf("file to open: \"%s\"\n", argv[1]); 
 
@@ -35,15 +35,22 @@ main(int argc, char **argv)
 
 	printf("data: \"%s\"\n", buf);
 
+	lseek(fd, 0, SEEK_SET);
 	int rc = 0;
 	do {
 		rc = read(fd, buf, CHUNK_SIZE);
 
 		if (rc > 0) {
+			hash = os_sha1(buf);
+			printf("sending payload with hash: %s\n", hash);
+			len = os_send(buf, rc, "1.2.3.4");
+
+			/*
 			int fdo = open("charlie.cnk", O_WRONLY|O_CREAT, S_IRUSR|S_IWUSR);
 			int rc_out = write(fdo, buf, CHUNK_SIZE);
 			close(fdo);
 			printf("wrote chunk of %d bytes\n", rc_out);
+			*/
 		}
 
 		printf("read %d bytes from file\n", rc);

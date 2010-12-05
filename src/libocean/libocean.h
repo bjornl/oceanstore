@@ -11,4 +11,4 @@ char * os_meta_create (int, char[]);
 
 void os_meta_dump (void *);
 
-int os_send (void *);
+int os_send (void *, int, const char *);
