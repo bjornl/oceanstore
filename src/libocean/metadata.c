@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
+#include <openssl/sha.h>
 #include <libocean.h>
 
 /* Desc: metadata chunk constructor
@@ -12,25 +13,26 @@ os_meta_create(int fd, char file[256])
 {
 	void *meta = NULL;
 	void *ptr;
-	char *file_hash;
+	unsigned char *file_hash;
 	u_int32_t generation = 7;
 	int meta_size = 0, i;
 
 	/* add generation number */
 	meta_size = meta_size + sizeof(u_int32_t);
 	meta = realloc(meta, meta_size);
-	ptr = meta; /* save the start address */
+	ptr = meta; /* save the memory segment address */
 	printf("reallocated to %d bytes\n", meta_size);
 	memcpy(meta, &generation, sizeof(int32_t));
 
 	/* add file key */
 	file_hash = os_sha1_file(fd);
-	printf("file hash: %s (%d bytes)\n", file_hash, (int) strlen(file_hash));
-	meta_size = meta_size + (40 * sizeof(int8_t));
+	meta_size = meta_size + (SHA_DIGEST_LENGTH * sizeof(unsigned char));
 	meta = realloc(meta, meta_size);
+	ptr = meta; /* save the memory segment address */
 	printf("reallocated to %d bytes\n", meta_size);
 	meta = (char *) meta + sizeof(u_int32_t);
-	memcpy(meta, file_hash, 40*sizeof(int8_t));
+	memcpy(meta, file_hash, SHA_DIGEST_LENGTH * sizeof(unsigned char));
+	free(file_hash);
 
 	/* add filepath */
 	if (file[0] == '/') {
@@ -42,8 +44,9 @@ os_meta_create(int fd, char file[256])
 	meta = ptr;
 	meta_size = meta_size + (256 * sizeof(int8_t));
 	meta = realloc(meta, meta_size);
+	ptr = meta; /* save the memory segment address */
 	printf("reallocated to %d bytes\n", meta_size);
-	meta = (char *) meta + sizeof(u_int32_t) + (40 * sizeof(int8_t));
+	meta = (char *) meta + sizeof(u_int32_t) + (SHA_DIGEST_LENGTH * sizeof(unsigned char));
 	memcpy(meta, file, 256*sizeof(int8_t));
 
 	meta = ptr;
@@ -57,7 +60,8 @@ os_meta_dump(void *meta)
 {
 	void *metap = meta;
 	u_int32_t generation;
-	char filekey[41], filename[257];
+	char filename[257];
+	unsigned char filekey[SHA_DIGEST_LENGTH];
 
 	printf("- dumping metadata block -\n");
 
@@ -68,12 +72,10 @@ os_meta_dump(void *meta)
 	metap = (char *) metap + sizeof(u_int32_t);
 
 	printf("File key:\n");
-	/* memcpy(&filekey, (char *) meta+sizeof(u_int32_t), 40*sizeof(int8_t)); */
-	memcpy(&filekey, (char *) metap, 40*sizeof(int8_t));
-	filekey[40] = '\0'; 
-	printf("\"%s\"\n", filekey);
+	memcpy(&filekey, (unsigned char *) metap, SHA_DIGEST_LENGTH * sizeof(unsigned char));
+	printf("\"%s\"\n", os_sha1_decode(filekey));
 
-	metap = (char *) metap + (40 * sizeof(int8_t));
+	metap = (char *) metap + (SHA_DIGEST_LENGTH * sizeof(unsigned char));
 
 	printf("File name:\n");
 	memcpy(&filename, (char *) metap, 256*sizeof(int8_t));

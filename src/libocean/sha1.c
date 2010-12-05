@@ -22,13 +22,12 @@ os_sha1(char *chunk)
 	return hash;
 }
 
-char *
+unsigned char *
 os_sha1_file(int fd)
 {
-	unsigned char md[SHA_DIGEST_LENGTH];
-	char *buf = malloc(CHUNK_SIZE);
-	char *hash = malloc(41);
-	int len = 0, i;
+	unsigned char *md = malloc(SHA_DIGEST_LENGTH);
+	unsigned char *buf = malloc(CHUNK_SIZE);
+	int len = 0;
 	SHA_CTX context;
 
 	lseek(fd, 0, SEEK_SET);
@@ -38,11 +37,20 @@ os_sha1_file(int fd)
 	do {
 		len = read(fd, buf, CHUNK_SIZE);
 		if (len)
-			SHA1_Update(&context, (unsigned char*) buf, len);
+			SHA1_Update(&context, buf, len);
 	} while (len);
 
 	free(buf);
 	SHA1_Final(md, &context);
+
+	return md;
+}
+
+char *
+os_sha1_decode(unsigned char *md)
+{
+	char *hash = calloc(41, sizeof(char));
+	int i;
 
 	for (i = 0 ; i < 20 ; i++)
 		sprintf(hash, "%s%02x", hash, md[i]);
