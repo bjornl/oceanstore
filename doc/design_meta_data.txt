@@ -25,6 +25,20 @@ Dummy example of a meta data chunk:
  | 2 | jkhj4hj23h4kjh3 | 6.6.6.6                    |
  +---+-------+---------+----------------------------+
 
+metadata block as it looks right now (added 101205):
+
++------------------------+---------------------+-----------------------+
+| generation (u_int32_t) | filekey (40*int8_t) | filename (256*int8_t) |
++------------------------+---------------------+-----------------------+
+| chunk# (u_int32_t)     | datakey (40*int8_t) | ipaddr #1             |
++------------------------+---------------------+-----------------------+
+| chunk# (u_int32_t)     | datakey (40*int8_t) | ipaddr #2             |
++------------------------+---------------------+-----------------------+
+| chunk# (u_int32_t)     | datakey (40*int8_t) | ipaddr #3             |
++------------------------+---------------------+-----------------------+
+
+idea: use 20 bytes digest instead of decoded, will save memory and disk/network resources
+
 in the protocol message header for generation a unsigned int32 will be used.
 
 each chunk exists on three different nodes.
