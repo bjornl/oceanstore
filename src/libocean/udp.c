@@ -29,3 +29,28 @@ os_send(void *chunk, int size, const char *ipaddr)
 
 	return len;
 }
+
+void
+os_recv(void)
+{
+	struct sockaddr_in saddr, saddrc;
+	socklen_t slen = sizeof(saddrc);
+	char buf[100000];
+	int fd;
+
+	fd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+
+	memset(&saddr, 0, sizeof(struct sockaddr_in));
+
+	saddr.sin_family = AF_INET;
+	saddr.sin_port = htons(4321);
+	saddr.sin_addr.s_addr = htonl(INADDR_ANY);
+
+	bind(fd, (const struct sockaddr *) &saddr, sizeof(saddr));
+
+	while(1) {
+		recvfrom(fd, buf, 100000, 0, (struct sockaddr *) &saddrc, &slen);
+
+		printf("received packet from: %s:%d\n", inet_ntoa(saddrc.sin_addr), ntohs(saddrc.sin_port));
+	}
+}

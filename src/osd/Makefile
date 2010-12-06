@@ -1,8 +1,10 @@
-target = osd
-objects = main.o
+CFLAGS = -Wall -g -I../libocean
+LDFLAGS = -L../libocean -locean
+TARGET = osd
+OBJECTS = main.o
 
-$(target): $(objects)
-	cc -o $(target) $(objects)
+$(TARGET): $(OBJECTS)
+	cc -o $(TARGET) $(OBJECTS) $(LDFLAGS)
 
 clean:
-	rm -f $(target) $(objects)
+	rm -f $(TARGET) $(OBJECTS)
