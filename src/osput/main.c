@@ -3,6 +3,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <string.h> /* memset */
 
 #include <libocean.h>
@@ -45,6 +46,7 @@ main(int argc, char **argv)
 			printf("sending payload with hash: %s\n", hash);
 			len = os_send(buf, rc, "1.2.3.4");
 			free(hash);
+			usleep(10000);
 
 			/*
 			int fdo = open("charlie.cnk", O_WRONLY|O_CREAT, S_IRUSR|S_IWUSR);
