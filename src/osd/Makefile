@@ -1,7 +1,7 @@
 CFLAGS = -Wall -g -I../libocean
 LDFLAGS = -L../libocean -locean
 TARGET = osd
-OBJECTS = main.o storage.o
+OBJECTS = main.o
 
 $(TARGET): $(OBJECTS)
 	cc -o $(TARGET) $(OBJECTS) $(LDFLAGS)
