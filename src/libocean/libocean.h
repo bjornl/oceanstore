@@ -1,3 +1,10 @@
+/* Shared variables */
+
+struct workunit {
+	void *chunk; /* pointer to chunk in memory */
+	int size;
+};
+
 /* Prototypes */
 
 char * os_sha1 (void *, int);
@@ -16,3 +23,7 @@ int os_send (void *, int, const char *);
 void os_recv (void);
 
 void os_store(void *, int);
+
+void os_pipeline_push(int, struct workunit *);
+
+struct workunit * os_pipeline_pull(int);

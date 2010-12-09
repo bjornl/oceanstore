@@ -4,6 +4,7 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 #include <libocean.h>
 
@@ -37,7 +38,9 @@ os_recv(void)
 {
 	struct sockaddr_in saddr, saddrc;
 	socklen_t slen = sizeof(saddrc);
+	struct workunit *wu;
 	char buf[100000];
+	void *chunk = NULL;
 	int fd, len;
 
 	fd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
@@ -55,6 +58,12 @@ os_recv(void)
 
 		printf("received packet of %d bytes from %s:%d\n", len, inet_ntoa(saddrc.sin_addr), ntohs(saddrc.sin_port));
 
-		os_store(buf, len);
+		/* os_store(buf, len); */
+		chunk = malloc(len);
+		memcpy(chunk, buf, len);
+		wu = malloc(sizeof(struct workunit));
+		wu->chunk = chunk;
+		wu->size = len;
+		os_pipeline_push(1, wu);
 	}
 }
