@@ -1,4 +1,5 @@
 all:
+	$(MAKE) -C lib/wool
 	$(MAKE) -C src/libocean
 	$(MAKE) -C src/osd
 	$(MAKE) -C src/osput
@@ -9,3 +10,4 @@ clean:
 	$(MAKE) clean -C src/osput
 	$(MAKE) clean -C src/osget
 	$(MAKE) clean -C src/libocean
+	$(MAKE) clean -C lib/wool
