@@ -1,0 +1,20 @@
+Wool 0.1
+
+Wool requires GCC, make and a shell. 
+
+The script 'wool.sh' takes an integer argument <n> and produces a
+header file (to stdout) which defines task definition macros for arity
+1 to <n> and loop body macros for arity 0 to <n-2>. Name the header file
+'wool.h'. 
+
+The file 'wool.c' implements the slow part of the run time system and it
+also defines 'main()'. Compiler it to a .o file and link.
+
+Compile and link the main program with pthreads (-pthread under Linux 
+and -lpthread under Solaris). Typical command line:
+
+  gcc -pthread -O3 -o foo foo.c wool.o
+
+The other C files included are example programs.
+
+Have fun!
