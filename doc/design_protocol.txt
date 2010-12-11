@@ -30,3 +30,19 @@ Protocol message packet types:
 
   client -> server on file download
 
+---
+Add 101211:
+
+Packet type is defined by a unsigned short int8_t at the begining of the packet.
+
+0 - reserved
+1 - metadata chunk transmit
+2 - metadata chunk request
+3 - data chunk transmit
+4 - data chunk request
+5
+6
+7
+8
+9
+
