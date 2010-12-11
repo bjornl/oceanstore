@@ -1,4 +1,4 @@
-CFLAGS = -Wall -g -O3
+CFLAGS = -Wall -g -O3 -fPIC
 
 all: wool.o
 
