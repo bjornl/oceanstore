@@ -5,6 +5,14 @@ struct workunit {
 	int size;
 };
 
+#include <sys/types.h>
+
+struct protocol {
+	void *chunk;
+	int size;
+	u_int8_t ptype;
+};
+
 /* Prototypes */
 
 char * os_sha1 (void *, int);
