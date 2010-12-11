@@ -1,5 +1,5 @@
 CFLAGS = -Wall -g -I../libocean -I../wool
-LDFLAGS = -L../libocean -locean -lpthread ../wool/wool.o
+LDFLAGS = -L../libocean -locean
 TARGET = osd
 OBJECTS = main.o
 
