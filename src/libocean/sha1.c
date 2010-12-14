@@ -8,11 +8,11 @@
 #define CHUNK_SIZE 64000
 
 char *
-os_sha1(void *chunk, int size)
+os_sha1(void *chunk, unsigned short int size)
 {
 	unsigned char buf[20];
 	char *hash = calloc(41, sizeof(char));
-	int i;
+	short int i;
 
 	SHA1((const unsigned char *) chunk, size, buf);
 
@@ -27,7 +27,7 @@ os_sha1_file(int fd)
 {
 	unsigned char *md = malloc(SHA_DIGEST_LENGTH);
 	unsigned char *buf = malloc(CHUNK_SIZE);
-	int len = 0;
+	unsigned short int len = 0;
 	SHA_CTX context;
 
 	lseek(fd, 0, SEEK_SET);
@@ -50,7 +50,7 @@ char *
 os_sha1_decode(unsigned char *md)
 {
 	char *hash = calloc(41, sizeof(char));
-	int i;
+	short int i;
 
 	for (i = 0 ; i < 20 ; i++)
 		sprintf(hash, "%s%02x", hash, md[i]);

@@ -15,9 +15,8 @@ struct protocol {
 
 /* Prototypes */
 
-char * os_sha1 (void *, int);
+char * os_sha1 (void *, unsigned short int);
 
-/* char * os_sha1_file (int); */
 unsigned char * os_sha1_file (int);
 
 char * os_sha1_decode (unsigned char *);
