@@ -11,10 +11,10 @@
 #include <stdio.h> /* printf */
 
 int
-os_send(void *chunk, int size, const char *ipaddr)
+os_send(void *chunk, unsigned short int size, const char *ipaddr)
 {
 	struct sockaddr_in saddr;
-	int fd, len = 0;
+	unsigned short int fd, len = 0;
 
 	fd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
