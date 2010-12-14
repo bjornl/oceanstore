@@ -8,10 +8,10 @@
 #include <libocean.h>
 
 void
-os_store(void *chunk, int size)
+os_store(void *chunk, unsigned short int size)
 {
 	char *hash;
-	int fd, len;
+	unsigned short int fd, len;
 
 	hash = os_sha1(chunk, size);
 

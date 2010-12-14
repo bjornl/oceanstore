@@ -29,7 +29,7 @@ int os_send (void *, unsigned short int, const char *);
 
 void os_recv (void);
 
-void os_store(void *, int);
+void os_store(void *, unsigned short int);
 
 void os_pipeline_push(int, struct workunit *);
 
