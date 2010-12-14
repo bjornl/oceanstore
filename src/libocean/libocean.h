@@ -9,7 +9,7 @@ struct workunit {
 
 struct protocol {
 	void *chunk;
-	int size;
+	unsigned short int size;
 	u_int8_t ptype;
 };
 

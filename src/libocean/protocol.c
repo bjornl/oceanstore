@@ -8,7 +8,7 @@ os_proto_add(u_int8_t ptype, void *chunk)
 }
 
 struct protocol *
-os_proto_ext(void *chunk, int size)
+os_proto_ext(void *chunk, unsigned short int size)
 {
 	struct protocol *proto;
 
