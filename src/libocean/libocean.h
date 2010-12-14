@@ -2,7 +2,7 @@
 
 struct workunit {
 	void *chunk; /* pointer to chunk in memory */
-	int size;
+	unsigned short int size;
 };
 
 #include <sys/types.h>

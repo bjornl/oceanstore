@@ -41,7 +41,7 @@ os_recv(void)
 	struct workunit *wu;
 	char buf[100000];
 	void *chunk = NULL;
-	int fd, len;
+	unsigned short int fd, len;
 
 	fd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
