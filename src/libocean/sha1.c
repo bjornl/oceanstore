@@ -4,8 +4,7 @@
 #include <openssl/sha.h>
 #include <sys/types.h>
 #include <unistd.h>
-
-#define CHUNK_SIZE 64000
+#include <libocean.h>
 
 char *
 os_sha1(void *chunk, unsigned short int size)
