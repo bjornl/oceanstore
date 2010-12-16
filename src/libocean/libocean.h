@@ -1,5 +1,7 @@
 /* Shared variables */
 
+#define CHUNK_SIZE 65000
+
 struct workunit {
 	void *chunk; /* pointer to chunk in memory */
 	unsigned short int size;

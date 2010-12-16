@@ -8,8 +8,6 @@
 
 #include <libocean.h>
 
-#define CHUNK_SIZE 65000
-
 int
 main(int argc, char **argv)
 {

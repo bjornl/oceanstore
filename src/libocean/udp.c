@@ -39,8 +39,7 @@ os_recv(void)
 	struct sockaddr_in saddr, saddrc;
 	socklen_t slen = sizeof(saddrc);
 	struct workunit *wu;
-	char buf[100000];
-	void *chunk = NULL;
+	char buf[CHUNK_SIZE];
 	unsigned short int fd, len;
 
 	fd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
@@ -54,15 +53,13 @@ os_recv(void)
 	bind(fd, (const struct sockaddr *) &saddr, sizeof(saddr));
 
 	while(1) {
-		len = recvfrom(fd, buf, 100000, 0, (struct sockaddr *) &saddrc, &slen);
+		len = recvfrom(fd, buf, CHUNK_SIZE, 0, (struct sockaddr *) &saddrc, &slen);
 
 		printf("received packet of %d bytes from %s:%d\n", len, inet_ntoa(saddrc.sin_addr), ntohs(saddrc.sin_port));
 
-		/* os_store(buf, len); */
-		chunk = malloc(len);
-		memcpy(chunk, buf, len);
 		wu = malloc(sizeof(struct workunit));
-		wu->chunk = chunk;
+		wu->chunk = malloc(len);
+		memcpy(wu->chunk, buf, len);
 		wu->size = len;
 		os_pipeline_push(1, wu);
 	}
