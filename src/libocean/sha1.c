@@ -12,7 +12,7 @@ os_sha1(void *chunk, unsigned short int size)
 {
 	unsigned char buf[20];
 	char *hash = calloc(41, sizeof(char));
-	short int i;
+	unsigned char i;
 
 	SHA1((const unsigned char *) chunk, size, buf);
 
@@ -50,7 +50,7 @@ char *
 os_sha1_decode(unsigned char *md)
 {
 	char *hash = calloc(41, sizeof(char));
-	short int i;
+	unsigned char i;
 
 	for (i = 0 ; i < 20 ; i++)
 		sprintf(hash, "%s%02x", hash, md[i]);
