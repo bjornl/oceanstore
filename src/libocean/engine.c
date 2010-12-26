@@ -5,9 +5,13 @@
 
 TASK_1(int, engine, struct workunit *, wu)
 {
+	struct protocol *proto;
+
 	printf("Engine called with arg: %p\n", (void *) wu);
 
-	os_store(wu->chunk, wu->size);
+	proto = os_proto_pkt_dsm(wu->chunk, wu->size);
+
+	os_store(proto->chunk, proto->size);
 
 	free(wu->chunk);
 	free(wu);

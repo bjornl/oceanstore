@@ -13,6 +13,7 @@ main(int argc, char **argv)
 {
 	char *buf = NULL;
 	char *meta, *hash;
+	void *pkt;
 	int fd = 0, len;
 
 	printf("file to open: \"%s\"\n", argv[1]); 
@@ -42,7 +43,9 @@ main(int argc, char **argv)
 		if (rc > 0) {
 			hash = os_sha1(buf, rc);
 			printf("sending payload with hash: %s\n", hash);
-			len = os_send(buf, rc, "1.2.3.4");
+			pkt = os_proto_pkt_asm(3, rc, buf);
+			/* len = os_send(buf, rc, "1.2.3.4"); */
+			len = os_send(pkt, rc + PROTO_SIZE, "1.2.3.4");
 			free(hash);
 			usleep(10000);
 

@@ -53,7 +53,7 @@ os_recv(void)
 	bind(fd, (const struct sockaddr *) &saddr, sizeof(saddr));
 
 	while(1) {
-		len = recvfrom(fd, buf, CHUNK_SIZE, 0, (struct sockaddr *) &saddrc, &slen);
+		len = recvfrom(fd, buf, CHUNK_SIZE + PROTO_SIZE, 0, (struct sockaddr *) &saddrc, &slen);
 
 		printf("received packet of %d bytes from %s:%d\n", len, inet_ntoa(saddrc.sin_addr), ntohs(saddrc.sin_port));
 

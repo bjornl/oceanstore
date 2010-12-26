@@ -1,6 +1,7 @@
 /* Shared variables */
 
 #define CHUNK_SIZE 65000
+#define PROTO_SIZE 1
 
 struct workunit {
 	void *chunk; /* pointer to chunk in memory */
@@ -31,8 +32,12 @@ int os_send (void *, unsigned short int, const char *);
 
 void os_recv (void);
 
-void os_store(void *, unsigned short int);
+void os_store (void *, unsigned short int);
 
-void os_pipeline_push(int, struct workunit *);
+void os_pipeline_push (int, struct workunit *);
 
-struct workunit * os_pipeline_pull(int);
+struct workunit * os_pipeline_pull (int);
+
+void * os_proto_pkt_asm (unsigned char, unsigned short int, void *);
+
+struct protocol * os_proto_pkt_dsm (void *, unsigned short int);
