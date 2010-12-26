@@ -7,16 +7,16 @@
  * Protocol packet assembler
  */
 void *
-os_proto_pkt_asm(unsigned char ptype, unsigned short size, void *chunk)
+os_proto_pkt_asm(unsigned char type, unsigned short size, void *chunk)
 {
 	void *pkt, *ptr;
 
-	printf("Proto: %d (%d bytes)\n", ptype, (int) sizeof(ptype));
+	printf("Proto: %d (%d bytes)\n", type, (int) sizeof(type));
 
 	pkt = malloc(size + PROTO_SIZE);
 	ptr = pkt;
 
-	memcpy(pkt, &ptype, PROTO_SIZE);
+	memcpy(pkt, &type, PROTO_SIZE);
 
 	pkt = pkt + PROTO_SIZE;
 
@@ -34,7 +34,7 @@ os_proto_pkt_dsm(void *chunk, unsigned short int size)
 
 	proto = calloc(1, sizeof(struct protocol));
 
-	memcpy(&proto->ptype, chunk, PROTO_SIZE);
+	memcpy(&proto->type, chunk, PROTO_SIZE);
 
 	proto->size = size - PROTO_SIZE;
 	proto->chunk = malloc(proto->size);
@@ -42,9 +42,8 @@ os_proto_pkt_dsm(void *chunk, unsigned short int size)
 	memcpy(proto->chunk, chunk + PROTO_SIZE, proto->size);
 
 	printf("Extracted:\n");
-	printf("Ptype: %d\n", proto->ptype);
+	printf("Ptype: %d\n", proto->type);
 	printf("Size: %d\n", proto->size);
-	printf("Chunk: \"%s\"\n", (char *) proto->chunk);
 
 	return proto;
 }

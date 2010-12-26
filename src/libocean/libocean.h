@@ -3,6 +3,15 @@
 #define CHUNK_SIZE 65000
 #define PROTO_SIZE 1
 
+#define META_TRANSMIT 1
+#define META_REQUEST 2
+#define DATA_TRANSMIT 3
+#define DATA_REQUEST 4
+#define NODE_TRANSMIT 5
+#define NODE_REQUEST 6
+#define KEY_TRANSMIT 7
+#define KEY_REQUEST 8
+
 struct workunit {
 	void *chunk; /* pointer to chunk in memory */
 	unsigned short int size;
@@ -13,7 +22,7 @@ struct workunit {
 struct protocol {
 	void *chunk;
 	unsigned short int size;
-	u_int8_t ptype;
+	unsigned char type;
 };
 
 /* Prototypes */
