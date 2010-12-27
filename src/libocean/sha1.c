@@ -22,6 +22,16 @@ os_sha1(void *chunk, unsigned short int size)
 }
 
 unsigned char *
+os_sha1_md(void *chunk, unsigned short int size)
+{
+	unsigned char *md = malloc(SHA_DIGEST_LENGTH);
+
+	SHA1((const unsigned char *) chunk, size, md);
+
+	return md;
+}
+
+unsigned char *
 os_sha1_file(int fd)
 {
 	unsigned char *md = malloc(SHA_DIGEST_LENGTH);
