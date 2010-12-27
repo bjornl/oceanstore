@@ -14,7 +14,7 @@ os_meta_create(int fd, char file[256])
 	void *meta = NULL;
 	void *ptr;
 	unsigned char *file_hash;
-	u_int32_t generation = 7;
+	u_int32_t generation = 7, chunkctr = 9;
 	int meta_size = 0, i;
 
 	/* add generation number */
@@ -50,6 +50,14 @@ os_meta_create(int fd, char file[256])
 	memcpy(meta, file, 256*sizeof(int8_t));
 
 	meta = ptr;
+	meta_size = meta_size + sizeof(u_int32_t);
+	meta = realloc(meta, meta_size);
+	ptr = meta; /* save the memory segment address */
+	printf("reallocated to %d bytes\n", meta_size);
+	meta = (char *) meta + sizeof(u_int32_t) + (SHA_DIGEST_LENGTH * sizeof(unsigned char)) + (256*sizeof(int8_t));
+	memcpy(meta, &chunkctr, sizeof(u_int32_t));
+
+	meta = ptr;
 	os_meta_dump(meta);
 
 	return meta;
@@ -59,7 +67,7 @@ void
 os_meta_dump(void *meta)
 {
 	void *metap = meta;
-	u_int32_t generation;
+	u_int32_t generation, chunkctr;
 	char filename[257];
 	unsigned char filekey[SHA_DIGEST_LENGTH];
 
@@ -80,4 +88,10 @@ os_meta_dump(void *meta)
 	printf("File name:\n");
 	memcpy(&filename, (char *) metap, 256*sizeof(int8_t));
 	printf("\"%s\"\n", filename);
+
+	metap = (char *) metap + (256*sizeof(int8_t));
+
+	printf("Chunkctr:\n");
+	memcpy(&chunkctr, metap, sizeof(u_int32_t));
+	printf("\"%d\"\n", chunkctr);
 }
