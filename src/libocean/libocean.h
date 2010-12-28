@@ -35,7 +35,7 @@ char * os_sha1_decode (unsigned char *);
 
 char * os_meta_create (int, char[]);
 
-void os_meta_dump (void *);
+void os_meta_dump (void *, unsigned short int);
 
 int os_send (void *, unsigned short int, const char *);
 

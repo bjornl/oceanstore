@@ -58,20 +58,20 @@ os_meta_create(int fd, char file[256])
 	memcpy(meta, &chunkctr, sizeof(u_int32_t));
 
 	meta = ptr;
-	os_meta_dump(meta);
+	os_meta_dump(meta, meta_size);
 
 	return meta;
 }
 
 void
-os_meta_dump(void *meta)
+os_meta_dump(void *meta, unsigned short int size)
 {
 	void *metap = meta;
 	u_int32_t generation, chunkctr;
 	char filename[257];
 	unsigned char filekey[SHA_DIGEST_LENGTH];
 
-	printf("- dumping metadata block -\n");
+	printf("- dumping metadata block of %d bytes -\n", size);
 
 	printf("Generation:\n");
 	memcpy(&generation, metap, sizeof(u_int32_t));
