@@ -15,6 +15,7 @@ main(int argc, char **argv)
 	char *meta, *hash;
 	void *pkt;
 	int fd = 0, len;
+	unsigned short int meta_size = 0;
 
 	printf("file to open: \"%s\"\n", argv[1]); 
 
@@ -64,11 +65,13 @@ main(int argc, char **argv)
 
 	close(fd);
 
-	os_meta_dump(meta, 284);
+	meta_size = 284;
 
-	meta = os_meta_chunk(meta, 284);
+	os_meta_dump(meta, meta_size);
 
-	os_meta_dump(meta, 288);
+	meta_size = os_meta_chunk(meta, meta_size);
+
+	os_meta_dump(meta, meta_size);
 
 	printf("%s\n", os_sha1("abc", 3));
 

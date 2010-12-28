@@ -104,7 +104,7 @@ os_meta_dump(void *meta, unsigned short int size)
 	}
 }
 
-void *
+unsigned short int
 os_meta_chunk(void *meta, unsigned short int size)
 {
 	u_int32_t chunkid = 6;
@@ -117,5 +117,5 @@ os_meta_chunk(void *meta, unsigned short int size)
 
 	memcpy(meta+(size-sizeof(u_int32_t)), &chunkid, sizeof(u_int32_t));
 
-	return meta;
+	return size;
 }
