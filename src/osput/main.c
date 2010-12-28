@@ -64,6 +64,10 @@ main(int argc, char **argv)
 
 	close(fd);
 
+	os_meta_dump(meta, 284);
+
+	os_meta_chunk(meta, 284);
+
 	printf("%s\n", os_sha1("abc", 3));
 
 	return 0;

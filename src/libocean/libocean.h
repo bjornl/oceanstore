@@ -50,3 +50,5 @@ struct workunit * os_pipeline_pull (int);
 void * os_proto_pkt_asm (unsigned char, unsigned short int, void *);
 
 struct protocol * os_proto_pkt_dsm (void *, unsigned short int);
+
+void os_meta_chunk (void *, unsigned short int);

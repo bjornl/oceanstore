@@ -95,3 +95,9 @@ os_meta_dump(void *meta, unsigned short int size)
 	memcpy(&chunkctr, metap, sizeof(u_int32_t));
 	printf("\"%d\"\n", chunkctr);
 }
+
+void
+os_meta_chunk(void *meta, unsigned short int size)
+{
+	printf("- adding chunk to metadata block of %d bytes -\n", size);
+}
