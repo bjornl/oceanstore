@@ -16,7 +16,6 @@ main(int argc, char **argv)
 	char *meta, *hash;
 	void *pkt;
 	int fd = 0, len;
-	unsigned short int meta_size = 0;
 	unsigned char *md;
 
 	printf("file to open: \"%s\"\n", argv[1]); 
@@ -73,13 +72,12 @@ main(int argc, char **argv)
 	os_meta_dump(foo->chunk, foo->size);
 
 	md = os_sha1_md("abc", 3);
-	printf("decoded md: \"%s\"\n", os_sha1_decode(md));
 
-	foo = os_meta_chunk(foo, 654321, md);
+	os_meta_chunk(foo, 654321, md);
 
 	os_meta_dump(foo->chunk, foo->size);
 
-	printf("%s\n", os_sha1("abc", 3));
+	printf("\"%s\"\n", os_sha1("abc", 3));
 
 	return 0;
 }
