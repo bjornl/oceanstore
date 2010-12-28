@@ -69,7 +69,7 @@ main(int argc, char **argv)
 
 	os_meta_dump(meta, meta_size);
 
-	meta_size = os_meta_chunk(meta, meta_size);
+	meta_size = os_meta_chunk(meta, meta_size, 654321);
 
 	os_meta_dump(meta, meta_size);
 

@@ -105,10 +105,8 @@ os_meta_dump(void *meta, unsigned short int size)
 }
 
 unsigned short int
-os_meta_chunk(void *meta, unsigned short int size)
+os_meta_chunk(void *meta, unsigned short int size, u_int32_t chunkid)
 {
-	u_int32_t chunkid = 6;
-
 	printf("- adding chunk to metadata block of %d bytes -\n", size);
 
 	size += sizeof(u_int32_t);
