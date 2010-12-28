@@ -1,0 +1,8 @@
+*.o
+*.so
+osd
+!osd/
+osget
+!osget/
+osput
+!osput/
