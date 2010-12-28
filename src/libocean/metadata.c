@@ -104,16 +104,22 @@ os_meta_dump(void *meta, unsigned short int size)
 	}
 }
 
-unsigned short int
-os_meta_chunk(void *meta, unsigned short int size, u_int32_t chunkid)
+struct metadata *
+os_meta_chunk(struct metadata *meta, u_int32_t chunkid, unsigned char *md)
 {
-	printf("- adding chunk to metadata block of %d bytes -\n", size);
+	printf("- adding chunk to metadata block of %d bytes -\n", meta->size);
 
-	size += sizeof(u_int32_t);
-	meta = realloc(meta, size);
-	printf("reallocated to %d bytes\n", size);
+	meta->size += sizeof(u_int32_t);
+	meta->chunk = realloc(meta->chunk, meta->size);
+	printf("reallocated to %d bytes\n", meta->size);
 
-	memcpy(meta+(size-sizeof(u_int32_t)), &chunkid, sizeof(u_int32_t));
+	memcpy(meta->chunk+(meta->size-sizeof(u_int32_t)), &chunkid, sizeof(u_int32_t));
 
-	return size;
+	printf("decode md: \"%s\"\n", os_sha1_decode(md));
+
+	meta->size += (SHA_DIGEST_LENGTH * sizeof(unsigned char));
+	meta->chunk = realloc(meta->chunk, meta->size);
+	printf("reallocated to %d bytes\n", meta->size);
+
+	return meta;
 }

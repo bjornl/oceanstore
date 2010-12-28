@@ -11,11 +11,13 @@
 int
 main(int argc, char **argv)
 {
+	struct metadata *foo = malloc(sizeof(struct metadata));
 	char *buf = NULL;
 	char *meta, *hash;
 	void *pkt;
 	int fd = 0, len;
 	unsigned short int meta_size = 0;
+	unsigned char *md;
 
 	printf("file to open: \"%s\"\n", argv[1]); 
 
@@ -65,13 +67,17 @@ main(int argc, char **argv)
 
 	close(fd);
 
-	meta_size = 284;
+	foo->chunk = meta;
+	foo->size = 284;
 
-	os_meta_dump(meta, meta_size);
+	os_meta_dump(foo->chunk, foo->size);
 
-	meta_size = os_meta_chunk(meta, meta_size, 654321);
+	md = os_sha1_md("abc", 3);
+	printf("decoded md: \"%s\"\n", os_sha1_decode(md));
 
-	os_meta_dump(meta, meta_size);
+	foo = os_meta_chunk(foo, 654321, md);
+
+	os_meta_dump(foo->chunk, foo->size);
 
 	printf("%s\n", os_sha1("abc", 3));
 

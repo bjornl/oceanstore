@@ -25,6 +25,11 @@ struct protocol {
 	unsigned char type;
 };
 
+struct metadata {
+	void *chunk;
+	unsigned short int size;
+};
+
 /* Prototypes */
 
 char * os_sha1 (void *, unsigned short int);
@@ -51,4 +56,6 @@ void * os_proto_pkt_asm (unsigned char, unsigned short int, void *);
 
 struct protocol * os_proto_pkt_dsm (void *, unsigned short int);
 
-unsigned short int os_meta_chunk (void *, unsigned short int, u_int32_t);
+struct metadata * os_meta_chunk (struct metadata *, u_int32_t, unsigned char *);
+
+unsigned char * os_sha1_md (void *, unsigned short int);
