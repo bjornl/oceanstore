@@ -73,7 +73,7 @@ main(int argc, char **argv)
 
 	md = os_sha1_md("abc", 3);
 
-	os_meta_chunk(foo, 654321, md);
+	os_meta_chunk(foo, 654321, md, "1.2.3.4");
 
 	os_meta_dump(foo->chunk, foo->size);
 

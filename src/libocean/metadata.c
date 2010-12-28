@@ -71,6 +71,7 @@ os_meta_dump(void *meta, unsigned short int size)
 	char filename[257];
 	unsigned char filekey[SHA_DIGEST_LENGTH];
 	unsigned char chunkkey[SHA_DIGEST_LENGTH];
+	char chunkip[39];
 
 	printf("- dumping metadata block of %d bytes -\n", size);
 
@@ -108,12 +109,20 @@ os_meta_dump(void *meta, unsigned short int size)
 		printf("chunkkey:\n");
 		memcpy(&chunkkey, (unsigned char *) metap, SHA_DIGEST_LENGTH);
 		printf("\"%s\"\n", os_sha1_decode(chunkkey));
+
+		metap = (char *) metap + SHA_DIGEST_LENGTH;
+
+		printf("chunkip1:\n");
+		memcpy(&chunkip, (unsigned char *) metap, 39);
+		printf("\"%s\"\n", chunkip);
 	}
 }
 
 void
-os_meta_chunk(struct metadata *meta, u_int32_t chunkid, unsigned char *md)
+os_meta_chunk(struct metadata *meta, u_int32_t chunkid, unsigned char *md, char *ip)
 {
+	char addr[39];
+
 	printf("- adding chunk to metadata block of %d bytes -\n", meta->size);
 
 	meta->size += sizeof(u_int32_t);
@@ -127,4 +136,12 @@ os_meta_chunk(struct metadata *meta, u_int32_t chunkid, unsigned char *md)
 	printf("reallocated to %d bytes\n", meta->size);
 
 	memcpy(meta->chunk+(meta->size-SHA_DIGEST_LENGTH), md, SHA_DIGEST_LENGTH);
+
+	meta->size += 39;
+	meta->chunk = realloc(meta->chunk, meta->size);
+	printf("reallocated to %d bytes\n", meta->size);
+
+	memset(&addr, 0, 39);
+	memcpy(&addr, ip, strlen(ip));
+	memcpy(meta->chunk+(meta->size-39), addr, 39);
 }
