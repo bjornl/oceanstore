@@ -17,6 +17,7 @@ main(int argc, char **argv)
 	void *pkt;
 	int fd = 0, len;
 	unsigned char *md;
+	unsigned int metachunkctr = 1;
 
 	printf("file to open: \"%s\"\n", argv[1]); 
 
@@ -55,7 +56,8 @@ main(int argc, char **argv)
 			usleep(10000);
 
 			md = os_sha1_md(buf, rc);
-			os_meta_chunk(foo, 654321, md, "1.2.3.4");
+			os_meta_chunk(foo, metachunkctr, md, "1.2.3.4");
+			metachunkctr++;
 
 			/*
 			int fdo = open("charlie.cnk", O_WRONLY|O_CREAT, S_IRUSR|S_IWUSR);
@@ -71,12 +73,6 @@ main(int argc, char **argv)
 	printf("data: \"%s\"\n", buf);
 
 	close(fd);
-
-	os_meta_dump(foo->chunk, foo->size);
-
-	md = os_sha1_md("abc", 3);
-
-	os_meta_chunk(foo, 654321, md, "1.2.3.4");
 
 	os_meta_dump(foo->chunk, foo->size);
 

@@ -76,52 +76,45 @@ os_meta_dump(void *meta, unsigned short int size)
 
 	printf("- dumping metadata block of %d bytes -\n", size);
 
-	printf("Generation:\n");
 	memcpy(&generation, metap, sizeof(u_int32_t));
-	printf("\"%d\"\n", generation);
+	printf("Generation: \"%d\"\n", generation);
 
 	metap = (char *) metap + sizeof(u_int32_t);
 
-	printf("File key:\n");
 	memcpy(&filekey, (unsigned char *) metap, SHA_DIGEST_LENGTH * sizeof(unsigned char));
-	printf("\"%s\"\n", os_sha1_decode(filekey));
+	printf("File key: \"%s\"\n", os_sha1_decode(filekey));
 
 	metap = (char *) metap + (SHA_DIGEST_LENGTH * sizeof(unsigned char));
 
-	printf("File name:\n");
 	memcpy(&filename, (char *) metap, 256*sizeof(int8_t));
-	printf("\"%s\"\n", filename);
+	printf("File name: \"%s\"\n", filename);
 
 	metap = (char *) metap + (256*sizeof(int8_t));
 
-	printf("Chunkctr:\n");
 	memcpy(&chunkctr, metap, sizeof(u_int32_t));
-	printf("\"%d\"\n", chunkctr);
+	printf("Chunkctr: \"%d\"\n", chunkctr);
 
 	metap = (char *) metap + sizeof(u_int32_t);
 
-	if (size > 284) {
+	if (size > META_CHUNK_HEADER_SIZE) {
 
 		chunksegs = (size - META_CHUNK_HEADER_SIZE) / META_CHUNK_SEGMENT_SIZE;
-		printf("num chunkssegs in this meta block: %d\n", chunksegs);
+		printf("num chunksegs in this block: \"%d\"\n", chunksegs);
 
-		for (i=0 ; i < chunksegs ; i++) {
+		for (i=1 ; i <= chunksegs ; i++) {
 
-			printf("chunkid:\n");
 			memcpy(&chunkid, metap, sizeof(u_int32_t));
-			printf("\"%d\"\n", chunkid);
+			printf("#%d chunkid: \"%d\"\n", i, chunkid);
 
 			metap = (char *) metap + sizeof(u_int32_t);
 
-			printf("chunkkey:\n");
 			memcpy(&chunkkey, (unsigned char *) metap, SHA_DIGEST_LENGTH);
-			printf("\"%s\"\n", os_sha1_decode(chunkkey));
+			printf("#%d chunkkey: \"%s\"\n", i, os_sha1_decode(chunkkey));
 
 			metap = (char *) metap + SHA_DIGEST_LENGTH;
 
-			printf("chunkip1:\n");
 			memcpy(&chunkip, (unsigned char *) metap, META_CHUNK_IP_FIELD_SIZE);
-			printf("\"%s\"\n", chunkip);
+			printf("#%d chunkip: \"%s\"\n", i, chunkip);
 
 			metap = (char *) metap + META_CHUNK_IP_FIELD_SIZE;
 		}
