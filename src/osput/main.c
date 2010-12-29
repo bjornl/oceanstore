@@ -30,6 +30,9 @@ main(int argc, char **argv)
 	/* construct inital metadata */
 	meta = os_meta_create(fd, argv[1]);
 
+	foo->chunk = meta;
+	foo->size = META_CHUNK_HEADER_SIZE;
+
 	/* some test code below */
 
 	buf = malloc(CHUNK_SIZE);
@@ -51,6 +54,9 @@ main(int argc, char **argv)
 			free(hash);
 			usleep(10000);
 
+			md = os_sha1_md(buf, rc);
+			os_meta_chunk(foo, 654321, md, "1.2.3.4");
+
 			/*
 			int fdo = open("charlie.cnk", O_WRONLY|O_CREAT, S_IRUSR|S_IWUSR);
 			int rc_out = write(fdo, buf, CHUNK_SIZE);
@@ -65,9 +71,6 @@ main(int argc, char **argv)
 	printf("data: \"%s\"\n", buf);
 
 	close(fd);
-
-	foo->chunk = meta;
-	foo->size = 284;
 
 	os_meta_dump(foo->chunk, foo->size);
 

@@ -72,6 +72,7 @@ os_meta_dump(void *meta, unsigned short int size)
 	unsigned char filekey[SHA_DIGEST_LENGTH];
 	unsigned char chunkkey[SHA_DIGEST_LENGTH];
 	char chunkip[39];
+	unsigned short int chunksegs, i;
 
 	printf("- dumping metadata block of %d bytes -\n", size);
 
@@ -100,21 +101,30 @@ os_meta_dump(void *meta, unsigned short int size)
 	metap = (char *) metap + sizeof(u_int32_t);
 
 	if (size > 284) {
-		printf("chunkid:\n");
-		memcpy(&chunkid, metap, sizeof(u_int32_t));
-		printf("\"%d\"\n", chunkid);
 
-		metap = (char *) metap + sizeof(u_int32_t);
+		chunksegs = (size - META_CHUNK_HEADER_SIZE) / META_CHUNK_SEGMENT_SIZE;
+		printf("num chunkssegs in this meta block: %d\n", chunksegs);
 
-		printf("chunkkey:\n");
-		memcpy(&chunkkey, (unsigned char *) metap, SHA_DIGEST_LENGTH);
-		printf("\"%s\"\n", os_sha1_decode(chunkkey));
+		for (i=0 ; i < chunksegs ; i++) {
 
-		metap = (char *) metap + SHA_DIGEST_LENGTH;
+			printf("chunkid:\n");
+			memcpy(&chunkid, metap, sizeof(u_int32_t));
+			printf("\"%d\"\n", chunkid);
 
-		printf("chunkip1:\n");
-		memcpy(&chunkip, (unsigned char *) metap, 39);
-		printf("\"%s\"\n", chunkip);
+			metap = (char *) metap + sizeof(u_int32_t);
+
+			printf("chunkkey:\n");
+			memcpy(&chunkkey, (unsigned char *) metap, SHA_DIGEST_LENGTH);
+			printf("\"%s\"\n", os_sha1_decode(chunkkey));
+
+			metap = (char *) metap + SHA_DIGEST_LENGTH;
+
+			printf("chunkip1:\n");
+			memcpy(&chunkip, (unsigned char *) metap, 39);
+			printf("\"%s\"\n", chunkip);
+
+			metap = (char *) metap + 39;
+		}
 	}
 }
 
