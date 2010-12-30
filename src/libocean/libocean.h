@@ -33,6 +33,16 @@ struct metadata {
 	unsigned short int size;
 };
 
+struct config {
+	char *conf;
+	char *node;
+};
+
+struct nodes {
+	char *node;
+	struct nodes *next;
+};
+
 /* Prototypes */
 
 char * os_sha1 (void *, unsigned short int);
