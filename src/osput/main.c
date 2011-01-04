@@ -49,7 +49,7 @@ main(int argc, char **argv)
 		if (rc > 0) {
 			hash = os_sha1(buf, rc);
 			printf("sending payload with hash: %s\n", hash);
-			pkt = os_proto_pkt_asm(3, rc, buf);
+			pkt = os_proto_pkt_asm(DATA_TRANSMIT, rc, buf);
 			/* len = os_send(buf, rc, "1.2.3.4"); */
 			len = os_send(pkt, rc + PROTO_SIZE, "1.2.3.4");
 			free(hash);
