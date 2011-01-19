@@ -57,6 +57,8 @@ main(int argc, char **argv)
 
 			md = os_sha1_md(buf, rc);
 			os_meta_chunk(foo, metachunkctr, md, "1.2.3.4");
+			os_meta_chunk(foo, metachunkctr, md, "0.0.0.0");
+			os_meta_chunk(foo, metachunkctr, md, "0.0.0.0");
 			metachunkctr++;
 
 			/*
