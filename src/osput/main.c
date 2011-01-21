@@ -56,9 +56,21 @@ main(int argc, char **argv)
 			usleep(10000);
 
 			md = os_sha1_md(buf, rc);
-			os_meta_chunk(foo, metachunkctr, md, "1.2.3.4");
-			os_meta_chunk(foo, metachunkctr, md, "0.0.0.0");
-			os_meta_chunk(foo, metachunkctr, md, "0.0.0.0");
+			if ((foo->size + META_CHUNK_SEGMENT_SIZE) > 65536) {
+				printf("Metadata chunk is full, allocate next!\n");
+			} else {
+				os_meta_chunk(foo, metachunkctr, md, "1.2.3.4");
+			}
+			if ((foo->size + META_CHUNK_SEGMENT_SIZE) > 65536) {
+				printf("Metadata chunk is full, allocate next!\n");
+			} else {
+				os_meta_chunk(foo, metachunkctr, md, "0.0.0.0");
+			}
+			if ((foo->size + META_CHUNK_SEGMENT_SIZE) > 65536) {
+				printf("Metadata chunk is full, allocate next!\n");
+			} else {
+				os_meta_chunk(foo, metachunkctr, md, "0.0.0.0");
+			}
 			metachunkctr++;
 
 			/*
