@@ -9,13 +9,14 @@
  * Returns: pointer to metadata chunk
  */
 char *
-os_meta_create(int fd, char file[256])
+os_meta_create(int fd, char *filep)
 {
 	void *meta = NULL;
 	void *ptr;
 	unsigned char *file_hash;
 	u_int32_t generation = 7, chunkctr = 9;
 	int meta_size = 0, i;
+	char file[256];
 
 	/* add generation number */
 	meta_size = meta_size + sizeof(u_int32_t);
@@ -33,6 +34,9 @@ os_meta_create(int fd, char file[256])
 	meta = (char *) meta + sizeof(u_int32_t);
 	memcpy(meta, file_hash, SHA_DIGEST_LENGTH * sizeof(unsigned char));
 	free(file_hash);
+
+	memset(&file, 0, 256);
+	memcpy(&file, filep, strlen(filep));
 
 	/* add filepath */
 	if (file[0] == '/') {

@@ -31,6 +31,7 @@ struct protocol {
 struct metadata {
 	void *chunk;
 	unsigned short int size;
+	struct metadata *next;
 };
 
 struct config {
