@@ -121,6 +121,9 @@ main(int argc, char **argv)
 
 	foo = foop;
 	while (foo != NULL) {
+		hash = os_sha1(foo->chunk, foo->size);
+		printf("sending meta payload with hash: %s\n", hash);
+		free(hash);
 		pkt = os_proto_pkt_asm(META_TRANSMIT, foo->size, foo->chunk);
 		len = os_send(pkt, foo->size + PROTO_SIZE, "1.2.3.4");
 		foo = foo->next;
