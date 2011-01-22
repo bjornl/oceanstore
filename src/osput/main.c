@@ -15,6 +15,7 @@ main(int argc, char **argv)
 	char *buf = NULL;
 	char *meta, *hash;
 	void *pkt;
+	void *foop;
 	int fd = 0, len;
 	unsigned char *file_hash, *md;
 	unsigned int metachunkctr = 1;
@@ -32,8 +33,10 @@ main(int argc, char **argv)
 	file_hash = os_sha1_file(fd);
 	meta = os_meta_create(file_hash, argv[1]);
 
+	foop = foo;
 	foo->chunk = meta;
 	foo->size = META_CHUNK_HEADER_SIZE;
+	foo->next = NULL;
 
 	/* some test code below */
 
@@ -57,18 +60,39 @@ main(int argc, char **argv)
 			usleep(10000);
 
 			md = os_sha1_md(buf, rc);
-			if ((foo->size + META_CHUNK_SEGMENT_SIZE) > 65536) {
+			if ((foo->size + META_CHUNK_SEGMENT_SIZE) > CHUNK_SIZE) {
 				printf("Metadata chunk is full, allocate next!\n");
+
+				foo->next = malloc(sizeof(struct metadata));
+				foo = foo->next;
+				foo->chunk = os_meta_create(file_hash, argv[1]);
+				foo->size = META_CHUNK_HEADER_SIZE;
+				foo->next = NULL;
+				os_meta_chunk(foo, metachunkctr, md, "1.2.3.4");
 			} else {
 				os_meta_chunk(foo, metachunkctr, md, "1.2.3.4");
 			}
-			if ((foo->size + META_CHUNK_SEGMENT_SIZE) > 65536) {
+			if ((foo->size + META_CHUNK_SEGMENT_SIZE) > CHUNK_SIZE) {
 				printf("Metadata chunk is full, allocate next!\n");
+
+				foo->next = malloc(sizeof(struct metadata));
+				foo = foo->next;
+				foo->chunk = os_meta_create(file_hash, argv[1]);
+				foo->size = META_CHUNK_HEADER_SIZE;
+				foo->next = NULL;
+				os_meta_chunk(foo, metachunkctr, md, "0.0.0.0");
 			} else {
 				os_meta_chunk(foo, metachunkctr, md, "0.0.0.0");
 			}
-			if ((foo->size + META_CHUNK_SEGMENT_SIZE) > 65536) {
+			if ((foo->size + META_CHUNK_SEGMENT_SIZE) > CHUNK_SIZE) {
 				printf("Metadata chunk is full, allocate next!\n");
+
+				foo->next = malloc(sizeof(struct metadata));
+				foo = foo->next;
+				foo->chunk = os_meta_create(file_hash, argv[1]);
+				foo->size = META_CHUNK_HEADER_SIZE;
+				foo->next = NULL;
+				os_meta_chunk(foo, metachunkctr, md, "0.0.0.0");
 			} else {
 				os_meta_chunk(foo, metachunkctr, md, "0.0.0.0");
 			}
@@ -89,10 +113,18 @@ main(int argc, char **argv)
 
 	close(fd);
 
-	os_meta_dump(foo->chunk, foo->size);
+	foo = foop;
+	while (foo != NULL) {
+		os_meta_dump(foo->chunk, foo->size);
+		foo = foo->next;
+	}
 
-	pkt = os_proto_pkt_asm(META_TRANSMIT, foo->size, foo->chunk);
-	len = os_send(pkt, foo->size + PROTO_SIZE, "1.2.3.4");
+	foo = foop;
+	while (foo != NULL) {
+		pkt = os_proto_pkt_asm(META_TRANSMIT, foo->size, foo->chunk);
+		len = os_send(pkt, foo->size + PROTO_SIZE, "1.2.3.4");
+		foo = foo->next;
+	}
 
 	printf("\"%s\"\n", os_sha1("abc", 3));
 
