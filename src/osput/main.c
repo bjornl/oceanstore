@@ -90,6 +90,9 @@ main(int argc, char **argv)
 
 	os_meta_dump(foo->chunk, foo->size);
 
+	pkt = os_proto_pkt_asm(META_TRANSMIT, foo->size, foo->chunk);
+	len = os_send(pkt, foo->size + PROTO_SIZE, "1.2.3.4");
+
 	printf("\"%s\"\n", os_sha1("abc", 3));
 
 	return 0;
