@@ -9,11 +9,10 @@
  * Returns: pointer to metadata chunk
  */
 char *
-os_meta_create(int fd, char *filep)
+os_meta_create(unsigned char *file_hash, char *filep)
 {
 	void *meta = NULL;
 	void *ptr;
-	unsigned char *file_hash;
 	u_int32_t generation = 7, chunkctr = 9;
 	int meta_size = 0, i;
 	char file[256];
@@ -26,14 +25,12 @@ os_meta_create(int fd, char *filep)
 	memcpy(meta, &generation, sizeof(int32_t));
 
 	/* add file key */
-	file_hash = os_sha1_file(fd);
 	meta_size = meta_size + (SHA_DIGEST_LENGTH * sizeof(unsigned char));
 	meta = realloc(meta, meta_size);
 	ptr = meta; /* save the memory segment address */
 	printf("reallocated to %d bytes\n", meta_size);
 	meta = (char *) meta + sizeof(u_int32_t);
 	memcpy(meta, file_hash, SHA_DIGEST_LENGTH * sizeof(unsigned char));
-	free(file_hash);
 
 	memset(&file, 0, 256);
 	memcpy(&file, filep, strlen(filep));

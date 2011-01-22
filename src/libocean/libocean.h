@@ -52,7 +52,7 @@ unsigned char * os_sha1_file (int);
 
 char * os_sha1_decode (unsigned char *);
 
-char * os_meta_create (int, char[]);
+char * os_meta_create (unsigned char *, char[]);
 
 void os_meta_dump (void *, unsigned short int);
 

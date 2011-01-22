@@ -16,7 +16,7 @@ main(int argc, char **argv)
 	char *meta, *hash;
 	void *pkt;
 	int fd = 0, len;
-	unsigned char *md;
+	unsigned char *file_hash, *md;
 	unsigned int metachunkctr = 1;
 
 	printf("file to open: \"%s\"\n", argv[1]); 
@@ -29,7 +29,8 @@ main(int argc, char **argv)
 	}
 
 	/* construct inital metadata */
-	meta = os_meta_create(fd, argv[1]);
+	file_hash = os_sha1_file(fd);
+	meta = os_meta_create(file_hash, argv[1]);
 
 	foo->chunk = meta;
 	foo->size = META_CHUNK_HEADER_SIZE;
