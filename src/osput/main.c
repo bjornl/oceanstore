@@ -97,19 +97,10 @@ main(int argc, char **argv)
 				os_meta_chunk(foo, metachunkctr, md, "0.0.0.0");
 			}
 			metachunkctr++;
-
-			/*
-			int fdo = open("charlie.cnk", O_WRONLY|O_CREAT, S_IRUSR|S_IWUSR);
-			int rc_out = write(fdo, buf, CHUNK_SIZE);
-			close(fdo);
-			printf("wrote chunk of %d bytes\n", rc_out);
-			*/
 		}
 
 		printf("read %d bytes from file\n", rc);
 	} while (rc);
-
-	printf("data: \"%s\"\n", buf);
 
 	close(fd);
 
@@ -128,8 +119,6 @@ main(int argc, char **argv)
 		len = os_send(pkt, foo->size + PROTO_SIZE, "1.2.3.4");
 		foo = foo->next;
 	}
-
-	printf("\"%s\"\n", os_sha1("abc", 3));
 
 	return 0;
 }
