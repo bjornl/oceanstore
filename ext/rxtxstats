@@ -1,0 +1,31 @@
+#!/bin/bash
+
+if [ "$1" != "-t" ]
+then
+	echo "Usage: rxtxstats -t {osput|osd} <logfile>"
+	exit
+fi
+
+if [ ! -f $3 ]
+then
+  echo "File does not exist: \"$3\""
+  exit
+fi
+
+echo "*** UDP Transmission Statistics ***"
+
+if [ "$2" = "osput" ]
+then
+	echo "Data packets sent : `grep 'sending payload with hash:' $3 | wc -l`"
+	echo "Meta packets sent : `grep 'sending meta payload with hash:' $3 | wc -l`"
+	exit
+fi
+
+if [ "$2" = "osd" ]
+then
+	echo "Data packets received : `grep 'Processing work unit of type Data Transmit' $3 | wc -l`"
+	echo "Meta packets received : `grep 'Processing work unit of type Meta Transmit' $3 | wc -l`"
+	exit
+fi
+
+echo "Unknown argument: \"$2\""
