@@ -118,6 +118,7 @@ main(int argc, char **argv)
 		pkt = os_proto_pkt_asm(META_TRANSMIT, foo->size, foo->chunk);
 		len = os_send(pkt, foo->size + PROTO_SIZE, "1.2.3.4");
 		foo = foo->next;
+		usleep(10000);
 	}
 
 	return 0;
