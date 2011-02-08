@@ -53,7 +53,7 @@ main(int argc, char **argv)
 			/* len = os_send(buf, rc, OSD_IPADDR); */
 			len = os_send(pkt, rc + PROTO_SIZE, OSD_IPADDR);
 			free(hash);
-			usleep(10000);
+			usleep(15000);
 
 			md = os_sha1_md(buf, rc);
 			if ((foo->size + META_CHUNK_SEGMENT_SIZE) > CHUNK_SIZE) {
@@ -99,6 +99,7 @@ main(int argc, char **argv)
 	} while (rc);
 
 	close(fd);
+	free(file_hash);
 
 	foo = foop;
 	while (foo != NULL) {
@@ -114,7 +115,7 @@ main(int argc, char **argv)
 		pkt = os_proto_pkt_asm(META_TRANSMIT, foo->size, foo->chunk);
 		len = os_send(pkt, foo->size + PROTO_SIZE, OSD_IPADDR);
 		foo = foo->next;
-		usleep(10000);
+		usleep(15000);
 	}
 
 	return 0;
