@@ -8,6 +8,8 @@
 
 #include <libocean.h>
 
+#define OSD_IPADDR "1.2.3.4" /* temporary */
+
 int
 main(int argc, char **argv)
 {
@@ -48,8 +50,8 @@ main(int argc, char **argv)
 			hash = os_sha1(buf, rc);
 			printf("sending payload with hash: %s\n", hash);
 			pkt = os_proto_pkt_asm(DATA_TRANSMIT, rc, buf);
-			/* len = os_send(buf, rc, "1.2.3.4"); */
-			len = os_send(pkt, rc + PROTO_SIZE, "1.2.3.4");
+			/* len = os_send(buf, rc, OSD_IPADDR); */
+			len = os_send(pkt, rc + PROTO_SIZE, OSD_IPADDR);
 			free(hash);
 			usleep(10000);
 
@@ -62,9 +64,9 @@ main(int argc, char **argv)
 				foo->chunk = os_meta_create(file_hash, argv[1]);
 				foo->size = META_CHUNK_HEADER_SIZE;
 				foo->next = NULL;
-				os_meta_chunk(foo, metachunkctr, md, "1.2.3.4");
+				os_meta_chunk(foo, metachunkctr, md, OSD_IPADDR);
 			} else {
-				os_meta_chunk(foo, metachunkctr, md, "1.2.3.4");
+				os_meta_chunk(foo, metachunkctr, md, OSD_IPADDR);
 			}
 			if ((foo->size + META_CHUNK_SEGMENT_SIZE) > CHUNK_SIZE) {
 				printf("Metadata chunk is full, allocate next!\n");
@@ -110,7 +112,7 @@ main(int argc, char **argv)
 		printf("sending meta payload with hash: %s\n", hash);
 		free(hash);
 		pkt = os_proto_pkt_asm(META_TRANSMIT, foo->size, foo->chunk);
-		len = os_send(pkt, foo->size + PROTO_SIZE, "1.2.3.4");
+		len = os_send(pkt, foo->size + PROTO_SIZE, OSD_IPADDR);
 		foo = foo->next;
 		usleep(10000);
 	}
