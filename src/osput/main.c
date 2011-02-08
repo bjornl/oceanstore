@@ -13,7 +13,7 @@ main(int argc, char **argv)
 {
 	struct metadata *foo = malloc(sizeof(struct metadata));
 	char *buf = NULL;
-	char *meta, *hash;
+	char *hash;
 	void *pkt;
 	void *foop;
 	int fd = 0, len;
@@ -31,19 +31,13 @@ main(int argc, char **argv)
 
 	/* construct inital metadata */
 	file_hash = os_sha1_file(fd);
-	meta = os_meta_create(file_hash, argv[1]);
-
 	foop = foo;
-	foo->chunk = meta;
+	foo->chunk = os_meta_create(file_hash, argv[1]);
 	foo->size = META_CHUNK_HEADER_SIZE;
 	foo->next = NULL;
 
-	/* some test code below */
-
 	buf = malloc(CHUNK_SIZE);
 	memset(buf, 0, CHUNK_SIZE);
-
-	printf("data: \"%s\"\n", buf);
 
 	lseek(fd, 0, SEEK_SET);
 	int rc = 0;
