@@ -11,6 +11,9 @@ TASK_1(int, engine, struct workunit *, wu)
 
 	proto = os_proto_pkt_dsm(wu->chunk, wu->size);
 
+	free(wu->chunk);
+	free(wu);
+
 	switch (proto->type) {
 		case META_TRANSMIT:
 			printf("Processing work unit of type Meta Transmit (%d)\n", META_TRANSMIT);
@@ -40,8 +43,8 @@ TASK_1(int, engine, struct workunit *, wu)
 
 	os_store(proto->chunk, proto->size);
 
-	free(wu->chunk);
-	free(wu);
+	free(proto->chunk);
+	free(proto);
 
 	return 0;
 }
