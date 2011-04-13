@@ -103,6 +103,12 @@ main(int argc, char **argv)
 
 	foo = foop;
 	while (foo != NULL) {
+		os_meta_chunk_setctr(foo->chunk, metachunkctr-1);
+		foo = foo->next;
+	}
+
+	foo = foop;
+	while (foo != NULL) {
 		os_meta_dump(foo->chunk, foo->size);
 		foo = foo->next;
 	}

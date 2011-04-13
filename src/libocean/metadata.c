@@ -13,7 +13,7 @@ os_meta_create(unsigned char *file_hash, char *filep)
 {
 	void *meta = NULL;
 	void *ptr;
-	u_int32_t generation = 7, chunkctr = 9;
+	u_int32_t generation = 7, chunkctr = 0;
 	int meta_size = 0, i;
 	char file[256];
 
