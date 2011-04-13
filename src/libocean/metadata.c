@@ -149,3 +149,17 @@ os_meta_chunk(struct metadata *meta, u_int32_t chunkid, unsigned char *md, char 
 	memcpy(&addr, ip, strlen(ip));
 	memcpy(meta->chunk+(meta->size-META_CHUNK_IP_FIELD_SIZE), addr, META_CHUNK_IP_FIELD_SIZE);
 }
+
+void
+os_meta_chunk_setctr(void *meta, u_int32_t chunkctr)
+{
+	void *metap = meta;
+
+	printf("- update metadata block with chunkctr: %d\n", chunkctr);
+
+	metap = (char *) metap + sizeof(u_int32_t);
+	metap = (char *) metap + (SHA_DIGEST_LENGTH * sizeof(unsigned char));
+	metap = (char *) metap + (256*sizeof(int8_t));
+
+	memcpy(metap, &chunkctr, sizeof(u_int32_t));
+}
