@@ -18,7 +18,7 @@ main(int argc, char **argv)
 	char *hash;
 	void *pkt;
 	void *foop;
-	int fd = 0, len;
+	int fd = 0;
 	unsigned char *file_hash, *md;
 	unsigned int metachunkctr = 1;
 
