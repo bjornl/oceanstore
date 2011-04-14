@@ -50,8 +50,7 @@ main(int argc, char **argv)
 			hash = os_sha1(buf, rc);
 			printf("sending payload with hash: %s\n", hash);
 			pkt = os_proto_pkt_asm(DATA_TRANSMIT, rc, buf);
-			/* len = os_send(buf, rc, OSD_IPADDR); */
-			len = os_send(pkt, rc + PROTO_SIZE, OSD_IPADDR);
+			os_send(pkt, rc + PROTO_SIZE, OSD_IPADDR);
 			free(hash);
 			usleep(20000);
 
@@ -119,7 +118,7 @@ main(int argc, char **argv)
 		printf("sending meta payload with hash: %s\n", hash);
 		free(hash);
 		pkt = os_proto_pkt_asm(META_TRANSMIT, foo->size, foo->chunk);
-		len = os_send(pkt, foo->size + PROTO_SIZE, OSD_IPADDR);
+		os_send(pkt, foo->size + PROTO_SIZE, OSD_IPADDR);
 		foo = foo->next;
 		usleep(20000);
 	}

@@ -56,7 +56,7 @@ char * os_meta_create (unsigned char *, char[]);
 
 void os_meta_dump (void *, unsigned short int);
 
-int os_send (void *, unsigned short int, const char *);
+void os_send (void *, unsigned short int, const char *);
 
 void os_recv (void);
 

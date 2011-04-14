@@ -10,11 +10,12 @@
 
 #include <stdio.h> /* printf */
 
-int
+void
 os_send(void *chunk, unsigned short int size, const char *ipaddr)
 {
 	struct sockaddr_in saddr;
-	unsigned short int fd, len = 0;
+	unsigned short int fd;
+	ssize_t len;
 
 	fd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
@@ -28,9 +29,7 @@ os_send(void *chunk, unsigned short int size, const char *ipaddr)
 
 	close(fd);
 
-	printf("sent %d bytes\n", len);
-
-	return len;
+	printf("sent %zd bytes\n", len);
 }
 
 void
@@ -40,7 +39,8 @@ os_recv(void)
 	socklen_t slen = sizeof(saddrc);
 	struct workunit *wu;
 	char buf[CHUNK_SIZE];
-	unsigned short int fd, len;
+	unsigned short int fd;
+	ssize_t len;
 
 	fd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 
@@ -55,7 +55,7 @@ os_recv(void)
 	while(1) {
 		len = recvfrom(fd, buf, CHUNK_SIZE + PROTO_SIZE, 0, (struct sockaddr *) &saddrc, &slen);
 
-		printf("received packet of %d bytes from %s:%d\n", len, inet_ntoa(saddrc.sin_addr), ntohs(saddrc.sin_port));
+		printf("received packet of %zd bytes from %s:%d\n", len, inet_ntoa(saddrc.sin_addr), ntohs(saddrc.sin_port));
 
 		wu = malloc(sizeof(struct workunit));
 		wu->chunk = malloc(len);
