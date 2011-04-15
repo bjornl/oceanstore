@@ -102,7 +102,7 @@ main(int argc, char **argv)
 
 	foo = foop;
 	while (foo != NULL) {
-		os_meta_chunk_setctr(foo->chunk, metachunkctr-1);
+		os_meta_set_ctr(foo->chunk, metachunkctr-1);
 		foo = foo->next;
 	}
 

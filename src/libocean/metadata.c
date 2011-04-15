@@ -151,7 +151,7 @@ os_meta_chunk(struct metadata *meta, u_int32_t chunkid, unsigned char *md, char 
 }
 
 void
-os_meta_chunk_setctr(void *meta, u_int32_t chunkctr)
+os_meta_set_ctr(void *meta, u_int32_t chunkctr)
 {
 	void *metap = meta;
 
