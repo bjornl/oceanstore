@@ -168,7 +168,7 @@ os_meta_chunk_setctr(void *meta, u_int32_t chunkctr)
  * Support function, returns the chunkctr of a meta chunk.
  */
 u_int32_t
-os_meta_chunk_get_chunkctr(void *meta)
+os_meta_get_ctr(void *meta)
 {
 	void *metap = meta;
 	u_int32_t chunkctr;
