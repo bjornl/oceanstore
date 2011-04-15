@@ -75,3 +75,5 @@ void os_meta_chunk (struct metadata *, u_int32_t, unsigned char *, char *);
 unsigned char * os_sha1_md (void *, unsigned short int);
 
 void os_meta_chunk_setctr (void *, u_int32_t);
+
+u_int32_t os_meta_chunk_get_chunkctr (void *);

@@ -6,6 +6,7 @@
 TASK_1(int, engine, struct workunit *, wu)
 {
 	struct protocol *proto;
+	u_int32_t chunkctr;
 
 	printf("Engine called with arg: %p\n", (void *) wu);
 
@@ -17,6 +18,8 @@ TASK_1(int, engine, struct workunit *, wu)
 	switch (proto->type) {
 		case META_TRANSMIT:
 			printf("Processing work unit of type Meta Transmit (%d)\n", META_TRANSMIT);
+			chunkctr = os_meta_chunk_get_chunkctr(proto->chunk);
+			printf("Extacted chunkctr from meta chunk: %d\n", chunkctr);
 			break;
 		case META_REQUEST:
 			printf("Processing work unit of type Meta Request (%d)\n", META_REQUEST);

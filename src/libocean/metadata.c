@@ -163,3 +163,21 @@ os_meta_chunk_setctr(void *meta, u_int32_t chunkctr)
 
 	memcpy(metap, &chunkctr, sizeof(u_int32_t));
 }
+
+/*
+ * Support function, returns the chunkctr of a meta chunk.
+ */
+u_int32_t
+os_meta_chunk_get_chunkctr(void *meta)
+{
+	void *metap = meta;
+	u_int32_t chunkctr;
+
+	metap = (char *) metap + sizeof(u_int32_t);
+	metap = (char *) metap + (SHA_DIGEST_LENGTH * sizeof(unsigned char));
+	metap = (char *) metap + (256*sizeof(int8_t));
+
+	memcpy(&chunkctr, metap, sizeof(u_int32_t));
+
+	return chunkctr;
+}
