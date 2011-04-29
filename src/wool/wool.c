@@ -26,9 +26,11 @@
 #include "wool.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include <malloc.h>
+/* #include <malloc.h> */
 #include <string.h>
 #include <unistd.h>
+
+#define memalign(A,B) malloc(B)
 
 /* Implements 
    leapfrogging, 
